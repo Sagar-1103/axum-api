@@ -6,6 +6,7 @@ use dotenv::dotenv;
 use crate::router::create_router;
 
 mod router;
+mod middlewares;
 
 async fn serve(app: Router, port: u16) {
     let addr = std::net::SocketAddr::from(([127,0,0,1],port));
