@@ -1,12 +1,12 @@
 use axum::{
     Router,
 };
-use dotenv::dotenv;
 
-use crate::router::create_router;
+use crate::{config::env::ENV, router::create_router};
 
 mod router;
 mod middlewares;
+mod config;
 
 async fn serve(app: Router, port: u16) {
     let addr = std::net::SocketAddr::from(([127,0,0,1],port));
@@ -17,8 +17,6 @@ async fn serve(app: Router, port: u16) {
 
 #[tokio::main]
 async fn main() {
-    dotenv().ok();
-    let port = std::env::var("PORT").expect("PORT not defined").parse().unwrap();
     let app = create_router();
-    serve(app, port).await;
+    serve(app, ENV.port).await;
 }

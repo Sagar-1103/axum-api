@@ -1,13 +1,11 @@
-use axum::http::{HeaderValue, Method};
+use axum::http::{Method};
 use tower_http::cors::{AllowOrigin, CorsLayer}; 
-use std::env;
+
+use crate::config::env::ENV;
 
 pub fn cors_layer() -> CorsLayer {
-    let origins = env::var("CORS_ORIGINS").expect("CORS_ORIGINS not defined");
-    let parsed_origins: Vec<HeaderValue> = origins.split(';').map(|o| o.trim().parse().unwrap()).collect();
-
     CorsLayer::new()
-    .allow_origin(AllowOrigin::list(parsed_origins))
+    .allow_origin(AllowOrigin::list(ENV.cors_origins.clone()))
     .allow_methods([
         Method::GET,
         Method::POST,
